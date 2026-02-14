@@ -16,7 +16,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# Timestamp de démarrage de l'application
+# Application startup timestamp
 _start_time: float = time.time()
 
 
@@ -44,10 +44,10 @@ class SystemService:
         minutes = int((uptime_seconds % 3600) // 60)
         uptime_str = f"{hours}h {minutes}min"
 
-        # Vérifier si le dataset est chargé
+        # Check if dataset is loaded
         dataset_loaded = data_manager.is_loaded()
 
-        # Déterminer le statut
+        # Determine status
         status: Literal["ok", "degraded", "error"] = "ok" if dataset_loaded else "degraded"
 
         # Obtenir le nombre d'enregistrements
@@ -70,7 +70,7 @@ class SystemService:
         SystemMetadata
             Métadonnées de l'API
         """
-        # Date de dernière mise à jour (timestamp actuel)
+        # Last update date (current timestamp)
         last_update = datetime.now(timezone.utc).isoformat()
 
         # Version Python

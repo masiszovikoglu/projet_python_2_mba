@@ -41,7 +41,7 @@ class StatsService:
         df = data_manager.get_data()
 
         total_transactions = len(df)
-        # Nombre de transactions négatives (possible indicateur de fraude/remboursement)
+        # Number of negative transactions (possible fraud/refund indicator)
         negative_count = len(df[df["amount"] < 0])
         negative_rate = float(negative_count / total_transactions) if total_transactions > 0 else 0.0
         avg_amount = float(df["amount"].mean())
@@ -49,7 +49,7 @@ class StatsService:
 
         return StatsOverview(
             total_transactions=total_transactions,
-            fraud_rate=negative_rate,  # Taux de transactions négatives
+            fraud_rate=negative_rate,  # Negative transactions rate
             avg_amount=avg_amount,
             most_common_type=most_common_type,
         )
@@ -71,7 +71,7 @@ class StatsService:
         """
         df = data_manager.get_data()
 
-        # Créer les bins
+        # Create bins
         max_amount = df["amount"].max()
         bin_edges = np.linspace(0, max_amount, bins_count + 1)
 

@@ -40,15 +40,15 @@ class FraudDetectionService:
 
         total_transactions = len(df)
 
-        # Transactions suspectes : montants négatifs ou très élevés
+        # Suspicious transactions: negative amounts or very high amounts
         suspicious = df[(df["amount"] < 0) | (df["amount"].abs() > 5000)]
         suspicious_count = len(suspicious)
 
-        # Transactions à haut risque : montants négatifs très élevés
+        # High-risk transactions: very negative amounts
         high_risk = df[df["amount"] < -1000]
         high_risk_count = len(high_risk)
 
-        # Score de risque moyen (basé sur montant absolu normalisé)
+        # Average risk score (based on normalized absolute amount)
         avg_risk_score = min(100, float(df["amount"].abs().mean() / 10))
 
         suspicious_rate = float(suspicious_count / total_transactions) if total_transactions > 0 else 0.0
@@ -113,37 +113,37 @@ class FraudDetectionService:
         risk_score = 0.0
         reasons = []
 
-        # Règle 1: Montant négatif (remboursement/rétrofacturation)
+        # Rule 1: Negative amount (chargeback/refund)
         if request.amount < 0:
             risk_score += 30
             reasons.append("Negative amount (chargeback/refund)")
 
-        # Règle 2: Montant très élevé
+        # Rule 2: Very high amount
         if abs(request.amount) > 5000:
             risk_score += 25
             reasons.append("Very high amount")
 
-        # Règle 3: Catégories à risque (Cash Services, etc.)
-        high_risk_mccs = [6010, 6011, 6050, 6051, 6211, 6538]  # Codes risqués
+        # Rule 3: High-risk categories (Cash Services, etc.)
+        high_risk_mccs = [6010, 6011, 6050, 6051, 6211, 6538]  # Risky codes
         if request.mcc in high_risk_mccs:
             risk_score += 20
             reasons.append("High-risk merchant category")
 
-        # Règle 4: Transaction en ligne (plus risquée)
+        # Rule 4: Online transaction (higher risk)
         if request.use_chip and request.use_chip == "Online Transaction":
             risk_score += 15
             reasons.append("Online transaction (higher risk)")
 
-        # Règle 5: Certains états plus risqués (fictif pour la démo)
+        # Rule 5: Some states are riskier (demo purposes)
         high_risk_states = ["CA", "NY", "FL"]
         if request.merchant_state and request.merchant_state in high_risk_states:
             risk_score += 10
             reasons.append(f"Merchant in high-risk state ({request.merchant_state})")
 
-        # Normaliser le score
+        # Normalize score
         risk_score = min(risk_score, 100.0)
 
-        # Déterminer si c'est suspicieux et le niveau de risque
+        # Determine if suspicious and risk level
         is_suspicious = risk_score >= 50
 
         risk_level: Literal["low", "medium", "high"]

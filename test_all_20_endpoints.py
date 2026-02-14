@@ -97,12 +97,12 @@ def main():
     else:
         failed += 1
     
-    if test_endpoint(7, "GET", "/api/transactions/by-customer/1556", "Transactions par client"):
+    if test_endpoint(7, "GET", "/api/transactions/by-customer?client_id=1556", "Transactions par client"):
         passed += 1
     else:
         failed += 1
     
-    if test_endpoint(8, "GET", "/api/transactions/to-merchant/59935", "Transactions vers commerçant"):
+    if test_endpoint(8, "GET", "/api/transactions/to-merchant?merchant_id=59935", "Transactions vers commerçant"):
         passed += 1
     else:
         failed += 1

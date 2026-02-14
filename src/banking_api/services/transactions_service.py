@@ -79,7 +79,7 @@ class TransactionsService:
         end_idx = start_idx + limit
         df_page = df.iloc[start_idx:end_idx]
 
-        # Conversion en modèles
+        # Convert to models
         transactions = [
             Transaction(**row.to_dict()) for _, row in df_page.iterrows()
         ]
@@ -220,8 +220,8 @@ class TransactionsService:
         bool
             True si supprimé, False sinon
         """
-        # Note: Cette fonction est pour les tests uniquement
-        # Dans un environnement réel, elle modifierait la base de données
+        # Note: This function is for testing purposes only
+        # In a real environment, it would modify the database
         df = data_manager.get_data()
         exists = not df[df["id"] == transaction_id].empty
 

@@ -74,21 +74,21 @@ class DataManager:
             # Convertir l'ID en string
             self._data["id"] = self._data["id"].astype(str)
 
-            # Nettoyer le montant (enlever le "$" et convertir en float)
+            # Clean amount (remove "$" and convert to float)
             if self._data["amount"].dtype == object:
                 self._data["amount"] = self._data["amount"].str.replace("$", "").astype(float)
 
-            # Convertir zip en int (pandas peut le charger comme float)
+            # Convert zip to int (pandas may load it as float)
             if "zip" in self._data.columns:
                 self._data["zip"] = self._data["zip"].fillna(0).astype(int)
 
-            # Nettoyer les champs texte (remplacer NaN par chaîne vide)
+            # Clean text fields (replace NaN with empty string)
             text_columns = ["use_chip", "merchant_city", "merchant_state"]
             for col in text_columns:
                 if col in self._data.columns:
                     self._data[col] = self._data[col].fillna("").astype(str)
 
-            # Gérer les valeurs manquantes dans errors
+            # Handle missing values in errors
             if "errors" in self._data.columns:
                 self._data["errors"] = self._data["errors"].fillna("").astype(str)
                 self._data.loc[self._data["errors"] == "nan", "errors"] = None

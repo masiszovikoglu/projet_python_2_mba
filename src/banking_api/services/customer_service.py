@@ -40,7 +40,7 @@ class CustomerService:
         """
         df = data_manager.get_data()
 
-        # Récupérer tous les clients uniques (convertir en string)
+        # Get all unique customers (convert to string)
         customers = sorted(df["client_id"].unique().tolist())
         total = len(customers)
 
@@ -70,7 +70,7 @@ class CustomerService:
         """
         df = data_manager.get_data()
 
-        # Récupérer toutes les transactions du client
+        # Get all transactions for this customer
         df_customer = df[df["client_id"] == customer_id]
 
         if df_customer.empty:
