@@ -117,7 +117,7 @@ class TestTransactionsRoutes:
         assert response.status_code == 200
         data = response.json()
         assert isinstance(data, list)
-        assert len(data) == 5
+        assert len(data) == 3  # Swipe, Chip, Online
 
     def test_get_recent_transactions(self, client: TestClient) -> None:
         """
@@ -154,21 +154,21 @@ class TestTransactionsRoutes:
         client : TestClient
             Client de test FastAPI
         """
-        response = client.get("/api/transactions/by-customer/C1231006815")
+        response = client.get("/api/transactions/by-customer?client_id=1231006815")
         assert response.status_code == 200
         data = response.json()
         assert isinstance(data, list)
 
     def test_get_transactions_to_customer(self, client: TestClient) -> None:
         """
-        Teste la récupération des transactions vers un client.
+        Teste la récupération des transactions vers un merchant.
 
         Parameters
         ----------
         client : TestClient
             Client de test FastAPI
         """
-        response = client.get("/api/transactions/to-customer/C840083671")
+        response = client.get("/api/transactions/to-merchant?merchant_id=2")
         assert response.status_code == 200
         data = response.json()
         assert isinstance(data, list)

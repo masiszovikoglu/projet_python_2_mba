@@ -51,15 +51,14 @@ class TestCustomersRoutes:
         client : TestClient
             Client de test FastAPI
         """
-        response = client.get("/api/customers/C1231006815")
+        response = client.get("/api/customers/1231006815")
         assert response.status_code == 200
         data = response.json()
         assert "id" in data
         assert "transactions_count" in data
         assert "avg_amount" in data
         assert "total_amount" in data
-        assert "fraudulent" in data
-        assert data["id"] == "C1231006815"
+        assert data["id"] == 1231006815
 
     def test_get_customer_profile_not_found(self, client: TestClient) -> None:
         """
@@ -70,7 +69,7 @@ class TestCustomersRoutes:
         client : TestClient
             Client de test FastAPI
         """
-        response = client.get("/api/customers/C9999999999")
+        response = client.get("/api/customers/9999999999")
         assert response.status_code == 404
 
     def test_get_top_customers(self, client: TestClient) -> None:
@@ -86,7 +85,7 @@ class TestCustomersRoutes:
         assert response.status_code == 200
         data = response.json()
         assert isinstance(data, list)
-        assert len(data) <= 3
+        assert len(data) == 3  # We asked for top 3
         for customer in data:
             assert "customer_id" in customer
             assert "total_amount" in customer

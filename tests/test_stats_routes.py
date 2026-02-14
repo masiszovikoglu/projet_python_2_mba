@@ -47,20 +47,20 @@ class TestStatsRoutes:
 
     def test_get_stats_by_type(self, client: TestClient) -> None:
         """
-        Teste les statistiques par type de transaction.
+        Teste les statistiques par mode de transaction.
 
         Parameters
         ----------
         client : TestClient
             Client de test FastAPI
         """
-        response = client.get("/api/stats/by-type")
+        response = client.get("/api/stats/by-chip")
         assert response.status_code == 200
         data = response.json()
         assert isinstance(data, list)
-        assert len(data) == 5
+        assert len(data) == 3  # Swipe, Chip, Online
         for stat in data:
-            assert "type" in stat
+            assert "use_chip" in stat
             assert "count" in stat
             assert "avg_amount" in stat
 
@@ -78,6 +78,6 @@ class TestStatsRoutes:
         data = response.json()
         assert isinstance(data, list)
         for stat in data:
-            assert "step" in stat
+            assert "date" in stat  # Changed from "step" to "date"
             assert "count" in stat
             assert "avg_amount" in stat

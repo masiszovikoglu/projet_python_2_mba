@@ -30,22 +30,22 @@ class TestFraudRoutes:
 
     def test_get_fraud_by_type(self, client: TestClient) -> None:
         """
-        Teste les statistiques de fraude par type.
+        Teste les statistiques de fraude par mode de transaction.
 
         Parameters
         ----------
         client : TestClient
             Client de test FastAPI
         """
-        response = client.get("/api/fraud/by-type")
+        response = client.get("/api/fraud/by-merchant")
         assert response.status_code == 200
         data = response.json()
         assert isinstance(data, list)
         for item in data:
-            assert "type" in item
+            assert "use_chip" in item
             assert "total_count" in item
-            assert "fraud_count" in item
-            assert "fraud_rate" in item
+            assert "suspicious_count" in item
+            assert "suspicious_rate" in item
 
     def test_predict_fraud(self, client: TestClient) -> None:
         """
